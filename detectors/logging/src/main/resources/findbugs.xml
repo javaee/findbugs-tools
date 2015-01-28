@@ -60,9 +60,12 @@
 
         <Detector class="org.glassfish.findbugs.detectors.logging.LogMessageInfoAnnotationsDetector" 
             speed="fast" reports="GF_INVALID_MSG_ID_PATTERN,GF_MISSING_LOGMESSAGE_INFO_ANNOTATION" />
+
+        <Detector class="org.glassfish.findbugs.detectors.logging.SystemOutErrUsageDetector" 
+            speed="fast" reports="GF_SYSTEM_OUT_ERR_USAGE" />
             
         <BugPattern type="GF_UNCONDITIONAL_DEBUG_LOGGING" abbrev="GF_LOGGING" category="CORRECTNESS"/>
-        
+                
         <BugPattern type="GF_INCORRECT_CONDITIONAL_DEBUG_LOGGING" abbrev="GF_LOGGING" category="CORRECTNESS"/>
         
         <BugPattern type="GF_LOG_DOMAINS_USAGE" abbrev="GF_LOGGING" category="CORRECTNESS"/>
@@ -78,5 +81,7 @@
         <BugPattern type="GF_INVALID_MSG_ID_PATTERN" abbrev="GF_LOGGING" category="CORRECTNESS"/>
         
         <BugPattern type="GF_MISSING_LOGMESSAGE_INFO_ANNOTATION" abbrev="GF_LOGGING" category="CORRECTNESS"/>
-
+        
+        <BugPattern type="GF_SYSTEM_OUT_ERR_USAGE" abbrev="GF_LOGGING" category="CORRECTNESS"/>
+        
 </FindbugsPlugin>

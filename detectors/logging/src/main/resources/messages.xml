@@ -79,6 +79,13 @@
             </Details>
         </Detector>
 
+        <Detector class="org.glassfish.findbugs.detectors.logging.SystemOutErrUsageDetector">
+            <Details>
+                Detects the usage of System.out or System.err within a class.
+            </Details>
+        </Detector>
+
+
         <BugPattern type="GF_UNCONDITIONAL_DEBUG_LOGGING">
             <ShortDescription>Unguarded FINE or lower level logging invocation.</ShortDescription>
             <LongDescription>Detected logging of computed expressions as FINE or lower level messages without Logger.isLoggable() check.</LongDescription>
@@ -165,6 +172,16 @@
             <Details>
 <![CDATA[
 <p>The log message ID should be annotated with LogMessageInfo annotation for documentation and localization purposes.</p>
+]]>
+            </Details>
+        </BugPattern>
+
+        <BugPattern type="GF_SYSTEM_OUT_ERR_USAGE">
+            <ShortDescription>Found the usage of System.out or System.err within a class.</ShortDescription>
+            <LongDescription>Found the usage of System.out or System.err within a class.</LongDescription>
+            <Details>
+<![CDATA[
+<p>The calls to System.out or System.err print methods should be replaced with standard java.util.logging APIs.</p>
 ]]>
             </Details>
         </BugPattern>
