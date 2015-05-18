@@ -1,8 +1,8 @@
-#! /bin/sh
+#!/bin/sh
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
 #
-# Copyright (c) 2010-2014 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2010-2015 Oracle and/or its affiliates. All rights reserved.
 #
 # The contents of this file are subject to the terms of either the GNU
 # General Public License Version 2 only ("GPL") or the Common Development
@@ -103,6 +103,7 @@ fi
 
 to_email() {
 	case "$1" in
+	UNKNOWN)	echo "$OWNER";;
 	*@*)	echo "$1";;
 	*)	echo "$1@java.net";;
 	esac
@@ -140,15 +141,35 @@ do
 	fi
 
 	$VERBOSE "Send error message to $alias for $i"
+	if type modowner > /dev/null 2>&1
+	then
+		mowners=`grep "^$i:" $TMP | modowner`
+	else
+		mowners=''
+	fi
 	if [ -n "$EMAIL" ]
 	then
-		alias="$EMAIL"
 		$VERBOSE "Forcing email to $EMAIL"
+		alias="$EMAIL"
+		owners="$EMAIL"
+	else
+		if [ -z "$mowners" ]
+		then
+			owners="$OWNER"
+		else
+			owners="$OWNER,$mowners"
+		fi
 	fi
 	# It's possible for user to receive multiple emails if other users
 	# are aliased to the same email address in the users.alias file.
-	(cat $NAGMSG; grep "^$i:" $TMP) | $MAILPROG $MV \
-		-s "FindBugs$PRIORITY errors$PSUB" -c "$OWNER" "$alias"
+	(
+	echo "Committer: $i"
+	[ -z "$mowners" ] || echo "Module owners: $mowners"
+	echo
+	cat $NAGMSG;
+	grep "^$i:" $TMP
+	) | $MAILPROG $MV \
+		-s "FindBugs$PRIORITY errors$PSUB" -c "$owners" "$alias"
 
 done
 #
