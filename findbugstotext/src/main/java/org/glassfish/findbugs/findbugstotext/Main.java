@@ -1,7 +1,7 @@
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- * Copyright (c) 2010-2013 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2010-2015 Oracle and/or its affiliates. All rights reserved.
  *
  * The contents of this file are subject to the terms of either the GNU
  * General Public License Version 2 only ("GPL") or the Common Development
@@ -63,12 +63,33 @@ import javax.xml.bind.Unmarshaller;
  * @author Bill Shannon
  */
 public class Main {
-    public static void main(String[] args) throws Exception {
-	boolean showall = args.length > 0 && args[0].equals("-a");
+    public static void main(String[] argv) throws Exception {
+	boolean showall = false;
+	int rank = -1;
+
+	int optind;
+	for (optind = 0; optind < argv.length; optind++) {
+	    if (argv[optind].equals("-s")) {
+		showall = true;
+	    } else if (argv[optind].equals("-r")) {
+		rank = Integer.parseInt(argv[++optind]);
+	    } else if (argv[optind].equals("--")) {
+		optind++;
+		break;
+	    } else if (argv[optind].startsWith("-")) {
+		System.out.println(
+		    "Usage: findbugstotext [-a] [-r rank]");
+		System.exit(1);
+	    } else {
+		break;
+	    }
+	}
 	JAXBContext jc = JAXBContext.newInstance(BugCollection.class);
 	Unmarshaller unmarshaller = jc.createUnmarshaller();
 	BugCollection bc = (BugCollection)unmarshaller.unmarshal(System.in);
 	for (BugCollection.BugInstance bi : bc.getBugInstance()) {
+	    if (rank > 0 && bi.getRank() > rank)
+		continue;
 	    SourceLine savesl = null;
 	    SourceLine sl = null;
 	    for (Object o : bi.getClazzOrTypeOrMethod()) {
