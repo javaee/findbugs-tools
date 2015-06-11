@@ -47,6 +47,9 @@
 #
 #	Assumes $DEV_ROOT and $SRC set per WLS workspace conventions.
 #
+
+# have to limit p4 operations to the revision of this workspace
+rev=`p4 changes -m1 //depot/dev/$SRC/...#have | awk '{print $2;}'`
 perl -e '
 
 $tmp = "/tmp/co" . $$;
@@ -63,6 +66,7 @@ line: while (<>) {
 #	}
 	($p4file = $file) =~ '"s:$DEV_ROOT/://depot/dev/$SRC/:"';
 	$p4file =~ s:/\./:/:g;
+	$p4file = $p4file . "@" . "'${rev}'";
 	if ($file ne $curfile ) {
 		$curfile = $file;
 		$fileok = 0;
