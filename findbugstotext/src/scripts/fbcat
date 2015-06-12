@@ -47,6 +47,7 @@
 #	-m	send mail to owner
 #	-i file	get list of findbugsXml.xml files from file
 #	-a	show all lines for each error, not just the first line
+#	-r rank	only show bugs with rank or higher
 #	-v	verbose
 #
 
@@ -81,7 +82,7 @@ findsrc() {
 	done
 }
 
-USAGE="fbcat [-o] [-m] [-i xml-file-list] [-v]"
+USAGE="fbcat [-o] [-m] [-i xml-file-list] [-a] [-r rank] [-v]"
 getowner=cat
 mail=cat
 fblist=
