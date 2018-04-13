@@ -118,7 +118,7 @@ ${project.build.directory}/generated-sources/xjc/META-INF/jaxb-BugCollection.epi
 	<dependency>
 	    <groupId>junit</groupId>
 	    <artifactId>junit</artifactId>
-	    <version>4.7</version>
+            <version>4.12</version>
 	    <scope>test</scope>
 	</dependency>
     </dependencies>
